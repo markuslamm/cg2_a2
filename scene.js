@@ -48,7 +48,7 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
                              "Triangle": false,
                              "Cube": false,
                              "Band": false,
-                             "Wireframe": false
+                             "+ Wireframe": false
                              };                       
     };
 
