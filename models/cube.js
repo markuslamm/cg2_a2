@@ -95,6 +95,50 @@ define(["util", "vbo"],
                                                     "dataType": gl.FLOAT,
                                                     "data": coords 
                                                   } );
+        
+        var triangles = [ 0,  1,  2,
+                          0,  2,  3, // front
+                          4,  6,  5,     
+                          4,  7,  6, // back
+                          8,  9, 10,
+                          8, 10, 11, // left
+                         12, 13, 14,
+                         12, 14, 15, // right
+                         16, 17, 18,
+                         16, 18, 19, // top
+                         20, 21, 22,
+                         20, 22, 23 ]; // bottom
+        
+     // create vertex buffer object (VBO) for the indices
+        this.triangleBuffer = new vbo.Indices(gl, {"indices": triangles});
+        
+        var colors = [ 1.0, 0.0, 0.0, 1.0,
+                       1.0, 0.0, 0.0, 1.0,
+			           1.0, 0.0, 0.0, 1.0,
+			           1.0, 0.0, 0.0, 1.0,
+			           0.0, 1.0, 0.0, 1.0,
+			           0.0, 1.0, 0.0, 1.0,
+			           0.0, 1.0, 0.0, 1.0,
+			           0.0, 1.0, 0.0, 1.0,
+			           0.0, 0.0, 1.0, 1.0,
+			           0.0, 0.0, 1.0, 1.0,
+			           0.0, 0.0, 1.0, 1.0,
+			           0.0, 0.0, 1.0, 1.0,
+			           1.0, 0.5, 0.0, 1.0,
+			           1.0, 0.5, 0.0, 1.0,
+			           1.0, 0.5, 0.0, 1.0,
+			           1.0, 0.5, 0.0, 1.0,
+			           1.0, 1.0, 0.0, 1.0,
+			           1.0, 1.0, 0.0, 1.0,
+			           1.0, 1.0, 0.0, 1.0,
+			           1.0, 1.0, 0.0, 1.0,
+			           0.0, 1.0, 1.0, 1.0,
+			           0.0, 1.0, 1.0, 1.0,
+			           0.0, 1.0, 1.0, 1.0,
+			           0.0, 1.0, 1.0, 1.0
+            ];
+        
+        this.colorBuffer = new vbo.Attribute(gl, { "numComponents": 4, "dataType": gl.FLOAT, "data": colors } );
 
         
     };
@@ -104,10 +148,11 @@ define(["util", "vbo"],
     
         // bind the attribute buffers
         this.coordsBuffer.bind(gl, program, "vertexPosition");
+        this.colorBuffer.bind(gl, program, "vertexColor");
+        this.triangleBuffer.bind(gl);
                 
-        // draw the vertices as points
-        gl.drawArrays(gl.POINTS, 0, this.coordsBuffer.numVertices()); 
-         
+        // draw the the vertices aus triangles
+        gl.drawElements(gl.TRIANGLES, this.triangleBuffer.numIndices(), gl.UNSIGNED_SHORT, 0);            
     };
         
     // this module only returns the constructor function    

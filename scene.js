@@ -45,7 +45,7 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
         // the HtmlController. Each attribute in this.drawOptions 
         // automatically generates a corresponding checkbox in the UI.
         this.drawOptions = { "Perspective Projection": false, 
-                             "Triangle": true,
+                             "Triangle": false,
                              "Cube": false,
                              "Band": false,
                              "Wireframe": false
@@ -85,7 +85,7 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
            this.triangle.draw(gl, this.programs.vertexColor);
         }
         if(this.drawOptions["Cube"]) {    
-            this.cube.draw(gl, this.programs.red);
+            this.cube.draw(gl, this.programs.vertexColor);
          }
         if(this.drawOptions["Band"]) {    
             this.band.draw(gl, this.programs.red);
