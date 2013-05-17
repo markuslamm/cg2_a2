@@ -39,7 +39,8 @@ define(["util", "vbo"],
     
         // generate vertex coordinates and store in an array
         var coords = [];
-        for(var i=0; i<=segments; i++) {
+        
+        for(var i = 0; i <= segments; i++) {
         
             // X and Z coordinates are on a circle around the origin
             var t = (i/segments)*Math.PI*2;
@@ -53,90 +54,58 @@ define(["util", "vbo"],
             // IMPORTANT: push each float value separately!
             coords.push(x,y0,z);
             coords.push(x,y1,z);
-            
-        };  
+        }; 
+        
+        // create vertex buffer object (VBO) for the coordinates
+        this.coordsBuffer = new vbo.Attribute(gl, {"numComponents": 3,
+                                                   "dataType": gl.FLOAT,
+                                                   "data": coords 
+                                                  });
         
         var triangles = [];
 
+        // indices of triangles [0, 1, 2, 2, 1, 3]
         for(var i = 0; i < segments * 2; i += 2){
-            triangles.push(i, i+1, i+2);
-            triangles.push(i+2, i+1, i+3);    
+            triangles.push(i, i + 1, i + 2);
+            triangles.push(i + 2, i + 1, i + 3);    
         }
         
+        // create vertex buffer object (VBO) for the indices
+        this.triangleBuffer = new vbo.Indices(gl, {"indices": triangles});
         
-
+        //lines for wireframe
         var lines = [];
 
         for(var i=0; i < segments * 2; i += 2){
-            lines.push(i, i+1);
-            lines.push(i, i+2); 
-            lines.push(i+1, i+3); 
-            lines.push(i+2, i+3);    
+            lines.push(i, i + 1);
+            lines.push(i, i + 2); 
+            lines.push(i + 1, i + 3); 
+            lines.push(i + 2, i + 3);    
         }
         
-        // create vertex buffer object (VBO) for the coordinates
-        this.coordsBuffer = new vbo.Attribute(gl, { "numComponents": 3,
-                                                    "dataType": gl.FLOAT,
-                                                    "data": coords 
-                                                  } );
-        
-        var triangles = [];
-
-        for(var i=0; i<segments*2; i+=2){
-            triangles.push(i,   i+1, i+2);
-            triangles.push(i+2, i+1, i+3);    
-        }
-
-        var lines = [];
-
-        for(var i=0; i<segments*2; i+=2){
-            lines.push(i  , i+1);
-            lines.push(i  , i+2); 
-            lines.push(i+1, i+3); 
-            lines.push(i+2, i+3);    
-        }
-
-        // create vertex buffer object (VBO) for the coordinates
-        this.coordsBuffer = new vbo.Attribute(gl, { "numComponents": 3,
-            "dataType": gl.FLOAT,
-            "data": coords 
-        } );
-
-        // create vertex buffer object (VBO) for the indices
-        this.triangleBuffer = new vbo.Indices(gl, {"indices": triangles});
-
         // create vertex buffer object (VBO) for the indices
         this.linesBuffer = new vbo.Indices(gl, {"indices": lines});
-
-
     };
 
     // draw method: activate buffers and issue WebGL draw() method
     Band.prototype.draw = function(gl,program) {
-    
-    	 if(this.asWireframe){
-             // bind the attribute buffers
-             this.coordsBuffer.bind(gl, program, "vertexPosition");
-             this.linesBuffer.bind(gl);
-
-             // draw the vertices as points
-             gl.drawElements(gl.LINES, this.linesBuffer.numIndices(), gl.UNSIGNED_SHORT, 0);
-         } else {
-             gl.enable(gl.POLYGON_OFFSET_FILL);
-             gl.polygonOffset(1.0, 1.0);
-             // bind the attribute buffers
-             this.coordsBuffer.bind(gl, program, "vertexPosition");
-             this.triangleBuffer.bind(gl);
-
-             // draw the vertices as points
-             gl.drawElements(gl.TRIANGLES, this.triangleBuffer.numIndices(), gl.UNSIGNED_SHORT, 0);
-             gl.disable(gl.POLYGON_OFFSET_FILL);
+    	this.coordsBuffer.bind(gl, program, "vertexPosition");
+    	if(this.asWireframe){
+    		// bind the attribute buffers
+            this.linesBuffer.bind(gl);
+            // draw the vertices as points
+            gl.drawElements(gl.LINES, this.linesBuffer.numIndices(), gl.UNSIGNED_SHORT, 0);
+        }
+    	else {
+    		// bind the attribute buffers
+            this.triangleBuffer.bind(gl);
+            // draw the vertices as points
+            gl.drawElements(gl.TRIANGLES, this.triangleBuffer.numIndices(), gl.UNSIGNED_SHORT, 0);
          }
     };
         
     // this module only returns the Band constructor function    
     return Band;
-
 })); // define
 
     
