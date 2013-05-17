@@ -8,9 +8,9 @@
 
 /* requireJS module definition */
 define(["jquery", "gl-matrix", "util", "program", "shaders", 
-        "models/triangle", "models/cube", "models/band"], 
+        "models/triangle", "models/cube", "models/band", "models/robot"], 
        (function($, glmatrix, util, Program, shaders,
-                 Triangle, Cube, Band ) {
+                 Triangle, Cube, Band, Robot ) {
 
     "use strict";
     
@@ -38,8 +38,8 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
         this.triangle = new Triangle(gl);
         this.cube = new Cube(gl);
         this.band = new Band(gl);
-        this.wireframe = new Band(gl);
-        this.wireframe.asWireframe = true;
+        this.wireframe = new Band(gl, {asWireframe : true});
+        this.robot = new Robot(gl);
 
         // initial position of the camera
         this.cameraTransformation = mat4.lookAt([0,0.5,3], [0,0,0], [0,1,0]);
@@ -54,7 +54,9 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
                              "Triangle": false,
                              "Cube": false,
                              "Band": false,
-                             "Wireframe": false
+                             "Wireframe": false,
+                             "Depth Test": false,
+                             "Show Robot": false
                              };                       
     };
 
@@ -98,6 +100,9 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
         }
         if(this.drawOptions["Wireframe"]) {    
             this.wireframe.draw(gl, this.programs.black);
+        }
+        if(this.drawOptions["Show Robot"]) {    
+            this.robot.draw(gl, this.programs.black);
         }
     };
 
