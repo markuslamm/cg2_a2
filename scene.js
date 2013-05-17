@@ -56,6 +56,8 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
                              "Band": false,
                              "Wireframe": false,
                              "Depth Test": false,
+                             "Frontface Culling": false,
+                             "Backface Culling": false,
                              "Show Robot": false
                              };                       
     };
@@ -85,8 +87,32 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
         gl.clear(gl.COLOR_BUFFER_BIT |Â gl.DEPTH_BUFFER_BIT); 
             
         // set up depth test to discard occluded fragments
-        gl.enable(gl.DEPTH_TEST);
-        gl.depthFunc(gl.LESS);  
+//        gl.enable(gl.DEPTH_TEST);
+//        gl.depthFunc(gl.LESS);
+        
+        //TODO veränderte cube darstellung???????
+        if(this.drawOptions["Depth Test"]){                    
+        	gl.enable(gl.DEPTH_TEST);
+        }
+        else {
+        	gl.disable(gl.DEPTH_TEST);
+        };
+
+		if(this.drawOptions["Frontface Culling"] && !this.drawOptions["Backface Culling"]){
+			gl.enable(gl.CULL_FACE);
+			gl.cullFace(gl.FRONT);
+		};
+		if(this.drawOptions["Backface Culling"] && !this.drawOptions["Frontface Culling"]){
+        	gl.enable(gl.CULL_FACE);
+			gl.cullFace(gl.BACK);
+		};
+		if(this.drawOptions["Backface Culling"] && this.drawOptions["Frontface Culling"]){
+			gl.enable(gl.CULL_FACE);
+        	gl.cullFace(gl.FRONT_AND_BACK);
+		};
+		if(!this.drawOptions["Backface Culling"] && !this.drawOptions["Frontface Culling"]){
+        	gl.disable(gl.CULL_FACE);
+		};
                 
         // draw the scene objects
         if(this.drawOptions["Triangle"]) {    
@@ -127,13 +153,10 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
                 window.console.log("axis " + rotationAxis + " not implemented.");
             break;
         };
-
         // redraw the scene
         this.draw();
     }
-
-    return Scene;            
-    
+    return Scene;           
 })); // define module
         
 

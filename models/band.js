@@ -90,6 +90,9 @@ define(["util", "vbo"],
     // draw method: activate buffers and issue WebGL draw() method
     Band.prototype.draw = function(gl,program) {
     	this.coordsBuffer.bind(gl, program, "vertexPosition");
+    	//avoid "Z-Fighting"
+    	gl.enable(gl.POLYGON_OFFSET_FILL);
+        gl.polygonOffset(1.0, 1.0);
     	if(this.asWireframe){
     		// bind the attribute buffers
             this.linesBuffer.bind(gl);
@@ -102,8 +105,8 @@ define(["util", "vbo"],
             // draw the vertices as points
             gl.drawElements(gl.TRIANGLES, this.triangleBuffer.numIndices(), gl.UNSIGNED_SHORT, 0);
          }
-    };
-        
+    	gl.disable(gl.POLYGON_OFFSET_FILL);
+    }; 
     // this module only returns the Band constructor function    
     return Band;
 })); // define
