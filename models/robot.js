@@ -29,6 +29,7 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		var headPosition	= [0.0, jointSize[1]/2 + headSize[1]/2, 0.0]; 
 		console.log("headPostion: " + headPosition);
 		var rightShoulderPosition = [torsoSize[0]/2 + jointSize[1]/2, torsoSize[1]/2 - jointSize[0]/2, 0.0];
+		var leftShoulderPosition = [-(torsoSize[0]/2 + jointSize[1]/2), torsoSize[1]/2 - jointSize[0]/2, 0.0];
 		/* 
 		 * creating skeleton objects and set position in scene 
 		 */
@@ -45,7 +46,9 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		mat4.translate(rightShoulder.transformation, rightShoulderPosition);
 		mat4.rotate(rightShoulder.transformation, Math.PI / 2, [0, 0, -1])
 		
-		
+		var leftShoulder = new SceneNode("left_shoulder");
+		mat4.translate(leftShoulder.transformation, leftShoulderPosition);
+		mat4.rotate(leftShoulder.transformation, Math.PI / 2, [0, 0, -1])
 		
 		/*
 		 * creating skins
@@ -65,10 +68,11 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		neck.addObjects([jointSkin]);
 		head.addObjects([headSkin]);
 		rightShoulder.addObjects([jointSkin]);
+		leftShoulder.addObjects([jointSkin]);
 		
 		/* creating scenegraph */
 		neck.addObjects([head]);
-		torso.addObjects([neck, rightShoulder]);
+		torso.addObjects([neck, rightShoulder, leftShoulder]);
 
 		/* the final robot */
 		this.result = new SceneNode("robot", [torso], this.programs.red);
