@@ -21,18 +21,17 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		var torsoSize 	= [0.6, 1.0, 0.4];
 		var jointSize 	= [0.2, 0.1, 0.2];
 		var headSize 	= [0.3, 0.4, 0.3];
-		
-		var upperArmSize = [0.15, 0.45, 0.15];
-        var lowerArmSize = [0.15, 0.45, 0.15];
 
 		/* positions */
-		var torsoPosition	= [0.0, 0, 0.0];
+		var torsoPosition	= [0.0,0.0, 0.0];
 		var neckPosition	= [0.0, torsoSize[1]/2 + jointSize[1]/2, 0.0];
 		console.log("neckPostion: " + neckPosition);
 		var headPosition	= [0.0, jointSize[1]/2 + headSize[1]/2, 0.0]; 
 		console.log("headPostion: " + headPosition);
-
-		/* creating skeleton objects and set position in scene */
+		var rightShoulderPosition = [torsoSize[0]/2 + jointSize[1]/2, torsoSize[1]/2 - jointSize[0]/2, 0.0];
+		/* 
+		 * creating skeleton objects and set position in scene 
+		 */
 		var torso = new SceneNode("torso");
 		mat4.translate(torso.transformation, torsoPosition);
 
@@ -42,27 +41,34 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		var head = new SceneNode("head");
 		mat4.translate(head.transformation, headPosition);
 		
+		var rightShoulder = new SceneNode("right_shoulder");
+		mat4.translate(rightShoulder.transformation, rightShoulderPosition);
+		mat4.rotate(rightShoulder.transformation, Math.PI / 2, [0, 0, -1])
 		
 		
-		/*creating skins */
+		
+		/*
+		 * creating skins
+		 */
 		var torsoSkin = new SceneNode("torso skin", [cube], this.programs.vertexColor);
 		mat4.scale(torsoSkin.transformation, torsoSize);
 		mat4.rotate(torsoSkin.transformation, 1 * Math.PI / 2, [0, 1, 0]); // blue in front, just optional
 
-		var joinSkin = new SceneNode("joint skin", [band], this.programs.red);
-		mat4.scale(joinSkin.transformation, jointSize);
+		var jointSkin = new SceneNode("joint skin", [band], this.programs.black);
+		mat4.scale(jointSkin.transformation, jointSize);
 		
 		var headSkin = new SceneNode("head skin", [cube], this.programs.vertexColor);
 		mat4.scale(headSkin.transformation, headSize);
 
 		/* connect skeleton with skins */
 		torso.addObjects([torsoSkin]);
-		neck.addObjects([joinSkin]);
+		neck.addObjects([jointSkin]);
 		head.addObjects([headSkin]);
+		rightShoulder.addObjects([jointSkin]);
 		
 		/* creating scenegraph */
 		neck.addObjects([head]);
-		torso.addObjects([neck]);
+		torso.addObjects([neck, rightShoulder]);
 
 		/* the final robot */
 		this.result = new SceneNode("robot", [torso], this.programs.red);
