@@ -18,7 +18,7 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
     // draw them in the draw() method
     var Scene = function(gl) {
 
-        // store the WebGL rendering context 
+        // store the WebGL rendering context
         this.gl = gl;  
             
         // create all required GPU programs from vertex and fragment shaders
@@ -34,6 +34,14 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
                 						shaders.vs_NoColor(), 
                 						shaders.fs_ConstantColor([0.0,0.0,0.0,1.0]) );
         
+        this.programs.green = new Program(gl,
+				shaders.vs_NoColor(), 
+				shaders.fs_ConstantColor([0.0,1.0,0.0,1.0]) );
+        
+        this.programs.violet = new Program(gl, 
+				shaders.vs_NoColor(), 
+				shaders.fs_ConstantColor([1.0,0.0,1.0,1.0]) );
+        
         // create some objects to be used for drawing
         this.triangle = new Triangle(gl);
         this.cube = new Cube(gl);
@@ -47,15 +55,15 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
         // transformation of the scene, to be changed by animation
         this.transformation = mat4.create(this.cameraTransformation);
 
-        // the scene has an attribute "drawOptions" that is used by 
-        // the HtmlController. Each attribute in this.drawOptions 
+        // the scene has an attribute "drawOptions" that is used by
+        // the HtmlController. Each attribute in this.drawOptions
         // automatically generates a corresponding checkbox in the UI.
         this.drawOptions = { "Perspective Projection": false, 
                              "Triangle": false,
                              "Cube": false,
                              "Band": false,
                              "Wireframe": false,
-                             "Depth Test": false,
+                             "Depth Test": true,
                              "Frontface Culling": false,
                              "Backface Culling": false,
                              "Show Robot": true
@@ -87,10 +95,10 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
         gl.clear(gl.COLOR_BUFFER_BIT |Â gl.DEPTH_BUFFER_BIT); 
             
         // set up depth test to discard occluded fragments
-//        gl.enable(gl.DEPTH_TEST);
-//        gl.depthFunc(gl.LESS);
+// gl.enable(gl.DEPTH_TEST);
+// gl.depthFunc(gl.LESS);
         
-        //TODO veränderte cube darstellung???????
+        // TODO veränderte cube darstellung???????
         if(this.drawOptions["Depth Test"]){                    
         	gl.enable(gl.DEPTH_TEST);
         }
@@ -141,7 +149,8 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
         // degrees to radians
         angle = angle*Math.PI/180;
         
-        // manipulate the corresponding matrix, depending on the name of the joint
+        // manipulate the corresponding matrix, depending on the name of the
+		// joint
         switch(rotationAxis) {
             case "worldY": 
                 mat4.rotate(this.transformation, angle, [0,1,0]);
