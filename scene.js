@@ -39,7 +39,7 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
         this.cube = new Cube(gl);
         this.band = new Band(gl);
         this.wireframe = new Band(gl, {asWireframe : true});
-        this.robot = new Robot(gl);
+        this.robot = new Robot(gl, this.programs);
 
         // initial position of the camera
         this.cameraTransformation = mat4.lookAt([0,0.5,3], [0,0,0], [0,1,0]);
@@ -58,7 +58,7 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
                              "Depth Test": false,
                              "Frontface Culling": false,
                              "Backface Culling": false,
-                             "Show Robot": false
+                             "Show Robot": true
                              };                       
     };
 
@@ -128,7 +128,7 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
             this.wireframe.draw(gl, this.programs.black);
         }
         if(this.drawOptions["Show Robot"]) {    
-            this.robot.draw(gl, this.programs.black);
+            this.robot.draw(gl, this.programs.red, this.transformation);
         }
     };
 
