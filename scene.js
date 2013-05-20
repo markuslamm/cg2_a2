@@ -96,7 +96,7 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
             
         // set up depth test to discard occluded fragments
 // gl.enable(gl.DEPTH_TEST);
-// gl.depthFunc(gl.LESS);
+ gl.depthFunc(gl.LESS);
         
         // TODO veränderte cube darstellung???????
         if(this.drawOptions["Depth Test"]){                    
