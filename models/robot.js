@@ -13,7 +13,7 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		/* create objects for drawing the roboter */
 		var triangle = new Triangle(gl);
 		var cube = new Cube(gl);
-		var band = new Band(gl,  { radius: 0.5, height: 1.0, segments: 50 });
+		var band = new Band(gl);
 		var wireframe = new Band(gl, { asWireframe : true
 		});
 

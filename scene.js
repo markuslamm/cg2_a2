@@ -158,6 +158,9 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
             case "worldX": 
                 mat4.rotate(this.transformation, angle, [1,0,0]);
                 break;
+            case "worldZ": 
+                mat4.rotate(this.transformation, angle, [0,0,1]);
+                break;
             default:
                 window.console.log("axis " + rotationAxis + " not implemented.");
             break;
