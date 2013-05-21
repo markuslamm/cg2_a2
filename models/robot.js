@@ -19,15 +19,13 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 
 		/* dimensions */
 		var torsoSize 	= [0.6, 1.0, 0.4];
-		var jointSize 	= [0.2, 0.1, 0.2];
+		var jointSize 	= [0.1, 0.1, 0.1];
 		var headSize 	= [0.3, 0.4, 0.3];
 
 		/* positions */
 		var torsoPosition	= [0.0,0.0, 0.0];
 		var neckPosition	= [0.0, torsoSize[1]/2 + jointSize[1]/2, 0.0];
-		console.log("neckPostion: " + neckPosition);
 		var headPosition	= [0.0, jointSize[1]/2 + headSize[1]/2, 0.0]; 
-		console.log("headPostion: " + headPosition);
 		var rightShoulderPosition = [torsoSize[0]/2 + jointSize[1]/2, torsoSize[1]/2 - jointSize[0]/2, 0.0];
 		var leftShoulderPosition = [-(torsoSize[0]/2 + jointSize[1]/2), torsoSize[1]/2 - jointSize[0]/2, 0.0];
 		/* 
@@ -44,11 +42,9 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		
 		var rightShoulder = new SceneNode("right_shoulder");
 		mat4.translate(rightShoulder.transformation, rightShoulderPosition);
-		mat4.rotate(rightShoulder.transformation, Math.PI / 2, [0, 0, -1])
 		
 		var leftShoulder = new SceneNode("left_shoulder");
 		mat4.translate(leftShoulder.transformation, leftShoulderPosition);
-		mat4.rotate(leftShoulder.transformation, Math.PI / 2, [0, 0, -1])
 		
 		/*
 		 * creating skins
@@ -57,15 +53,19 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		mat4.scale(torsoSkin.transformation, torsoSize);
 		mat4.rotate(torsoSkin.transformation, 1 * Math.PI / 2, [0, 1, 0]); // blue in front, just optional
 
-		var jointSkin = new SceneNode("joint skin", [band], this.programs.black);
-		mat4.scale(jointSkin.transformation, jointSize);
+		var neckSkin = new SceneNode("neck skin", [band], this.programs.black);
+		mat4.scale(neckSkin.transformation, jointSize);
 		
 		var headSkin = new SceneNode("head skin", [cube], this.programs.vertexColor);
 		mat4.scale(headSkin.transformation, headSize);
+		
+		var jointSkin = new SceneNode("joint_skin", [band], this.programs.black);
+		mat4.scale(jointSkin.transformation, jointSize);
+		mat4.rotate(jointSkin.transformation, Math.PI / 2, [0, 0, -1])
 
 		/* connect skeleton with skins */
 		torso.addObjects([torsoSkin]);
-		neck.addObjects([jointSkin]);
+		neck.addObjects([neckSkin]);
 		head.addObjects([headSkin]);
 		rightShoulder.addObjects([jointSkin]);
 		leftShoulder.addObjects([jointSkin]);
