@@ -101,15 +101,14 @@ define(["jquery"],
                 87: "leftShoulderX", 119: "leftShoulderX", //w
                 65: "leftShoulderZ", 97: "leftShoulderZ", //a
                 69: "leftElbowX", 101: "leftElbowX", // e
-                82: "leftWrist", 114: "leftWrist" // r
-                
-                	
+                82: "leftWristX", 114: "leftWristX", // r
+                84: "leftWristY", 116:	"leftWristY"// t	
             };
 
             // Rotate by +5 degrees or -5 degrees, depending on Shift key
             // *** assumption: keycodes below 97 are with Shift ***
             if(keyToAxis[keynumber]) {
-                scene.rotate(keyToAxis[keynumber], keynumber<97? -5 : 5);
+                scene.rotate(keyToAxis[keynumber], keynumber<97? 5 : -5);
             }
         }));
 

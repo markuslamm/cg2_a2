@@ -176,7 +176,11 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
             case "leftElbowX":
             	this.robot.rotate(rotationAxis, angle);
             	break;
-            case "leftWrist":
+            case "leftWristX":
+            	this.robot.rotate(rotationAxis, angle);
+            	break;
+            	
+            case "leftWristY":
             	this.robot.rotate(rotationAxis, angle);
             	break;
             default:
