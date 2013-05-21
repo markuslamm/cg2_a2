@@ -21,19 +21,23 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		var torsoSize 	= [0.6, 1.0, 0.4];
 		var jointSize 	= [0.1, 0.1, 0.1];
 		var headSize 	= [0.3, 0.4, 0.3];
-		var upperArmSize = [0.15, 0.4, 0.15];
-		var lowerArmSize = [0.15, 0.5, 0.15];
+		var upperArmSize = [0.15, 0.35, 0.15];
+		var lowerArmSize = [0.15, 0.3, 0.15];
 
 		/* positions */
 		var torsoPosition	= [0.0,0.0, 0.0];
 		var neckPosition	= [0.0, torsoSize[1]/2 + jointSize[1]/2, 0.0];
-		var headPosition	= [0.0, jointSize[1]/2 + headSize[1]/2, 0.0]; 
-		var rightShoulderPosition = [torsoSize[0]/2 + jointSize[1]/2, torsoSize[1]/2 - jointSize[0]/2, 0.0];
+		var headPosition	= [0.0, jointSize[1]/2 + headSize[1]/2, 0.0];
+		
 		var leftShoulderPosition = [-(torsoSize[0]/2 + jointSize[1]/2), torsoSize[1]/2 - jointSize[0]/2, 0.0];
 		var leftUpperArmPosition = [-(jointSize[0]/2 + upperArmSize[0]/2), (jointSize[1]/2 - upperArmSize[1]/2), 0];
 		var rightUpperArmPosition = [jointSize[0]/2 + upperArmSize[0]/2, (jointSize[1]/2 - upperArmSize[1]/2), 0];
 		var leftElbowPosition = [0.0, -(upperArmSize[1]/2 + jointSize[1]/2), 0.0];
 		var leftLowerArmPosition = [0, -(jointSize[1]/2 + lowerArmSize[1]/2), 0.0];
+		var leftWristPosition = [0, -(lowerArmSize[1]/2 + jointSize[1]/2), 0];
+		
+		var rightShoulderPosition = [torsoSize[0]/2 + jointSize[1]/2, torsoSize[1]/2 - jointSize[0]/2, 0.0];
+		
 
 		
 		
@@ -66,6 +70,9 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		
 		var leftLowerArm = new SceneNode("left_lower_arm");
 		mat4.translate(leftLowerArm.transformation, leftLowerArmPosition);
+		
+		var leftWrist = new SceneNode("left_wrist");
+		mat4.translate(leftWrist.transformation, leftWristPosition);
 		
 		/*
 		 * creating skins
@@ -102,9 +109,11 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		leftUpperArm.addObjects([upperArmSkin]);
 		leftElbow.addObjects([jointSkin]);
 		leftLowerArm.addObjects([lowerArmSkin]);
+		leftWrist.addObjects([jointSkin]);
 		
 		/* creating scenegraph */
 		neck.addObjects([head]);
+		leftLowerArm.addObjects([leftWrist]);
 		leftElbow.addObjects([leftLowerArm]);
 		leftUpperArm.addObjects([leftElbow]);
 		leftShoulder.addObjects([leftUpperArm]);
