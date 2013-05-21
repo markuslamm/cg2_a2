@@ -23,6 +23,7 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		var headSize 	= [0.3, 0.4, 0.3];
 		var upperArmSize = [0.15, 0.35, 0.15];
 		var lowerArmSize = [0.15, 0.3, 0.15];
+		var handSize = [0.2, 0.2, 0.1];
 
 		/* positions */
 		var torsoPosition	= [0.0,0.0, 0.0];
@@ -34,12 +35,14 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		var leftElbowPosition = [0.0, -(upperArmSize[1]/2 + jointSize[1]/2), 0.0];
 		var leftLowerArmPosition = [0, -(jointSize[1]/2 + lowerArmSize[1]/2), 0.0];
 		var leftWristPosition = [0, -(lowerArmSize[1]/2 + jointSize[1]/2), 0];
+		var leftHandPosition = [0, -(jointSize[1]/2 + handSize[1]/2), 0];
 		
 		var rightShoulderPosition = [torsoSize[0]/2 + jointSize[1]/2, torsoSize[1]/2 - jointSize[0]/2, 0.0];
 		var rightUpperArmPosition = [jointSize[0]/2 + upperArmSize[0]/2, (jointSize[1]/2 - upperArmSize[1]/2), 0];
 		var rightElbowPosition = [0.0, -(upperArmSize[1]/2 + jointSize[1]/2), 0.0];
 		var rightLowerArmPosition = [0, -(jointSize[1]/2 + lowerArmSize[1]/2), 0.0];
 		var rightWristPosition = [0, -(lowerArmSize[1]/2 + jointSize[1]/2), 0];
+		var rightHandPosition = [0, -(jointSize[1]/2 + handSize[1]/2), 0];
 
 		/* 
 		 * creating skeleton objects and set position in scene 
@@ -69,7 +72,8 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		var rightWrist = new SceneNode("right_wrist");
 		mat4.translate(rightWrist.transformation, rightWristPosition);
 		
-		
+		var rightHand = new SceneNode("right_hand");
+		mat4.translate(rightHand.transformation, leftHandPosition);
 		
 		var leftShoulder = new SceneNode("left_shoulder");
 		mat4.translate(leftShoulder.transformation, leftShoulderPosition);
@@ -86,6 +90,9 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		var leftWrist = new SceneNode("left_wrist");
 		mat4.translate(leftWrist.transformation, leftWristPosition);
 		
+		var leftHand = new SceneNode("left_hand");
+		mat4.translate(leftHand.transformation, rightHandPosition);
+		
 		/*
 		 * creating skins
 		 */
@@ -99,41 +106,55 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		var headSkin = new SceneNode("head skin", [cube], this.programs.vertexColor);
 		mat4.scale(headSkin.transformation, headSize);
 		
-		var jointSkin = new SceneNode("joint_skin", [band], this.programs.black);
-		mat4.scale(jointSkin.transformation, jointSize);
-		mat4.rotate(jointSkin.transformation, Math.PI / 2, [0, 0, -1])
+		var shoulderSkin =  new SceneNode("shoulder_skin", [band], this.programs.black);
+		mat4.scale(shoulderSkin.transformation, jointSize);
+		mat4.rotate(shoulderSkin.transformation, Math.PI / 2, [0, 0, -1]);
+		
+		var elbowSkin =  new SceneNode("elbow_skin", [band], this.programs.black);
+		mat4.scale(elbowSkin.transformation, jointSize);
+		mat4.rotate(elbowSkin.transformation, Math.PI / 2, [0, 0, -1]);
 		
 		var upperArmSkin = new SceneNode("upperarm_skin", [cube], this.programs.vertexColor);
 		mat4.scale(upperArmSkin.transformation, upperArmSize);
-		mat4.rotate(upperArmSkin.transformation, Math.PI / 2, [0, 0, -1]);
 		
 		var lowerArmSkin = new SceneNode("lowerarm_skin", [cube], this.programs.vertexColor);
 		mat4.scale(lowerArmSkin.transformation, lowerArmSize);
-		mat4.rotate(lowerArmSkin.transformation, Math.PI / 2, [0, 0, -1]);
+		
+		var wristSkin = new SceneNode("wrist_skin", [band], this.programs.black);
+		mat4.scale(wristSkin.transformation, jointSize);
+		
+		var handSkin = new SceneNode("hand_skin", [triangle], this.programs.violet);
+		mat4.scale(handSkin.transformation, handSize);
+		mat4.rotate(handSkin.transformation, 2 * Math.PI / 2, [0, 0, -1])
 
 		/* connect skeleton with skins */
 		torso.addObjects([torsoSkin]);
 		neck.addObjects([neckSkin]);
 		head.addObjects([headSkin]);
 		rightLowerArm.addObjects([lowerArmSkin]);
-		rightElbow.addObjects([jointSkin]);
+		rightElbow.addObjects([elbowSkin]);
 		rightUpperArm.addObjects([upperArmSkin]);
-		rightShoulder.addObjects([jointSkin]);
-		rightWrist.addObjects([jointSkin]);
+		rightShoulder.addObjects([shoulderSkin]);
+		rightWrist.addObjects([wristSkin]);
+		rightHand.addObjects([handSkin]);
 		
-		leftShoulder.addObjects([jointSkin]);
+		leftShoulder.addObjects([shoulderSkin]);
 		leftUpperArm.addObjects([upperArmSkin]);
-		leftElbow.addObjects([jointSkin]);
+		leftElbow.addObjects([elbowSkin]);
 		leftLowerArm.addObjects([lowerArmSkin]);
-		leftWrist.addObjects([jointSkin]);
+		leftWrist.addObjects([wristSkin]);
+		leftHand.addObjects([handSkin]);
 		
 		/* creating scenegraph */
 		neck.addObjects([head]);
+		
+		leftWrist.addObjects([leftHand]);
 		leftLowerArm.addObjects([leftWrist]);
 		leftElbow.addObjects([leftLowerArm]);
 		leftUpperArm.addObjects([leftElbow]);
 		leftShoulder.addObjects([leftUpperArm]);
 		
+		rightWrist.addObjects([rightHand]);
 		rightLowerArm.addObjects([rightWrist]);
 		rightElbow.addObjects([rightLowerArm]);
 		rightUpperArm.addObjects([rightElbow]);
