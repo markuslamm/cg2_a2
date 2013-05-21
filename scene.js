@@ -167,7 +167,18 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
             case "headY":
             	this.robot.rotate(rotationAxis, angle);
             	break;
-            	
+            case "leftShoulderX":
+            	this.robot.rotate(rotationAxis, angle);
+            	break;
+            case "leftShoulderZ":
+            	this.robot.rotate(rotationAxis, angle);
+            	break;
+            case "leftElbowX":
+            	this.robot.rotate(rotationAxis, angle);
+            	break;
+            case "leftWrist":
+            	this.robot.rotate(rotationAxis, angle);
+            	break;
             default:
                 window.console.log("axis " + rotationAxis + " not implemented.");
             break;

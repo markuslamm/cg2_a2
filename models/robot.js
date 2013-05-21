@@ -126,6 +126,7 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 
 		var wristSkin = new SceneNode("wrist_skin", [ band ], this.programs.black);
 		mat4.scale(wristSkin.transformation, jointSize);
+		mat4.rotate(wristSkin.transformation, Math.PI / 2, [ 0, 0, -1 ])
 
 		var handSkin = new SceneNode("hand_skin", [ triangle ], this.programs.violet);
 		mat4.scale(handSkin.transformation, handSize);
@@ -179,6 +180,18 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 					break;
 				case "headY":
 					mat4.rotate(neck.transformation, radians, [0, 1, 0])
+					break;
+				case "leftShoulderX":
+					mat4.rotate(leftShoulder.transformation, radians, [1, 0, 0])
+					break;
+				case "leftShoulderZ":
+					mat4.rotate(leftShoulder.transformation, radians, [0, 0, 1])
+					break;
+				case "leftElbowX":
+					mat4.rotate(leftElbow.transformation, radians, [1, 0, 0])
+					break;
+				case "leftWrist":
+					mat4.rotate(leftWrist.transformation, radians, [1, 0, 0])
 					break;
 				default:
 					window.console.log("joint " + rotationAxis + " not implemented.");
