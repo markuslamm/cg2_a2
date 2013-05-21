@@ -17,17 +17,17 @@ define(["jquery"],
     "use strict"; 
                 
     /*
-     * define callback functions to react to changes in the HTML page
-     * and provide them with a closure defining scene, animation, etc.
-     *
-     * parameters:
-     * - the scene object (to modify scene.drawOptions, etc.)
-     * - the animation object (to control on/off and speed)
-     *
-     */
+	 * define callback functions to react to changes in the HTML page and
+	 * provide them with a closure defining scene, animation, etc.
+	 * 
+	 * parameters: - the scene object (to modify scene.drawOptions, etc.) - the
+	 * animation object (to control on/off and speed)
+	 * 
+	 */
     var HtmlController = function(scene,animation) {
     
-        // internal function: turn a draw option name into a valid HTML element ID
+        // internal function: turn a draw option name into a valid HTML element
+		// ID
         var drawOptionId = function(name) {
             return "drawOpt_"+name.replace(/\ /g, "_");
         }
@@ -64,7 +64,7 @@ define(["jquery"],
         // create one input element for each attribute in scene.drawOptions
         for(var o in scene.drawOptions) {
             
-            // put together valid HTML code for a new table row 
+            // put together valid HTML code for a new table row
             var newRow = '<tr><td>'+o+'</td>'+
                          '<td><input id="'+drawOptionId(o)+'" type="checkbox" class="inputParam"></input></td></tr>\n';
                          
@@ -78,7 +78,8 @@ define(["jquery"],
             };
         };
         
-        // set up event handler and execute it once so everything is set consistently
+        // set up event handler and execute it once so everything is set
+		// consistently
         $(".inputParam").change( updateParams ); 
         updateParams();
 
@@ -89,11 +90,14 @@ define(["jquery"],
             window.console.log("key number " + keynumber + " pressed");
 
             // which key corresponds to which axis / joint
-            // there are two keys for each joint: with Shift and without Shift pressed
+            // there are two keys for each joint: with Shift and without Shift
+			// pressed
             var keyToAxis = {
                 88: "worldX", 120: "worldX", 
                 89: "worldY", 121: "worldY",
-                90: "worldZ", 122: "worldZ"
+                90: "worldZ", 122: "worldZ",
+                72: "headX", 104: "headX", // h
+                74: "headY", 106: "headY" // j
             };
 
             // Rotate by +5 degrees or -5 degrees, depending on Shift key
@@ -106,11 +110,11 @@ define(["jquery"],
         
     }; // end of HtmlController constructor function
 
-    // return the constructor function 
+    // return the constructor function
     return HtmlController;
 
 
-})); // require 
+})); // require
 
 
 

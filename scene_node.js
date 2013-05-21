@@ -68,7 +68,7 @@ define(["util", "gl-matrix"],
         // optional transformation for this node
         this.transformation  = transform || mat4.identity();
         
-        window.console.log("created node " + this.name + " with " + this.drawableObjects.length + " object(s).");
+//        window.console.log("created node " + this.name + " with " + this.drawableObjects.length + " object(s).");
         
     };
     
@@ -131,7 +131,7 @@ define(["util", "gl-matrix"],
             }
             
         };
-        window.console.log("added " + objects.length + " objects to SceneNode " + this.name + ".");
+        //window.console.log("added " + objects.length + " objects to SceneNode " + this.name + ".");
             
     };
     

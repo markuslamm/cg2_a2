@@ -146,21 +146,28 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
 
         window.console.log("rotating around " + rotationAxis + " by " + angle + " degrees." );
 
-        // degrees to radians
-        angle = angle*Math.PI/180;
+     // degrees to radians
+        var radians = angle*Math.PI/180;
         
         // manipulate the corresponding matrix, depending on the name of the
 		// joint
         switch(rotationAxis) {
             case "worldY": 
-                mat4.rotate(this.transformation, angle, [0,1,0]);
+                mat4.rotate(this.transformation, radians, [0,1,0]);
                 break;
             case "worldX": 
-                mat4.rotate(this.transformation, angle, [1,0,0]);
+                mat4.rotate(this.transformation, radians, [1,0,0]);
                 break;
             case "worldZ": 
-                mat4.rotate(this.transformation, angle, [0,0,1]);
+                mat4.rotate(this.transformation, radians, [0,0,1]);
                 break;
+            case "headX":
+            	this.robot.rotate(rotationAxis, angle);
+            	break;
+            case "headY":
+            	this.robot.rotate(rotationAxis, angle);
+            	break;
+            	
             default:
                 window.console.log("axis " + rotationAxis + " not implemented.");
             break;
