@@ -31,16 +31,16 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		
 		var leftShoulderPosition = [-(torsoSize[0]/2 + jointSize[1]/2), torsoSize[1]/2 - jointSize[0]/2, 0.0];
 		var leftUpperArmPosition = [-(jointSize[0]/2 + upperArmSize[0]/2), (jointSize[1]/2 - upperArmSize[1]/2), 0];
-		var rightUpperArmPosition = [jointSize[0]/2 + upperArmSize[0]/2, (jointSize[1]/2 - upperArmSize[1]/2), 0];
 		var leftElbowPosition = [0.0, -(upperArmSize[1]/2 + jointSize[1]/2), 0.0];
 		var leftLowerArmPosition = [0, -(jointSize[1]/2 + lowerArmSize[1]/2), 0.0];
 		var leftWristPosition = [0, -(lowerArmSize[1]/2 + jointSize[1]/2), 0];
 		
 		var rightShoulderPosition = [torsoSize[0]/2 + jointSize[1]/2, torsoSize[1]/2 - jointSize[0]/2, 0.0];
-		
+		var rightUpperArmPosition = [jointSize[0]/2 + upperArmSize[0]/2, (jointSize[1]/2 - upperArmSize[1]/2), 0];
+		var rightElbowPosition = [0.0, -(upperArmSize[1]/2 + jointSize[1]/2), 0.0];
+		var rightLowerArmPosition = [0, -(jointSize[1]/2 + lowerArmSize[1]/2), 0.0];
+		var rightWristPosition = [0, -(lowerArmSize[1]/2 + jointSize[1]/2), 0];
 
-		
-		
 		/* 
 		 * creating skeleton objects and set position in scene 
 		 */
@@ -58,6 +58,18 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		
 		var rightUpperArm = new SceneNode("right_upper_arm");
 		mat4.translate(rightUpperArm.transformation, rightUpperArmPosition);
+		
+
+		var rightElbow = new SceneNode("right_elbow");
+		mat4.translate(rightElbow.transformation, rightElbowPosition);
+		
+		var rightLowerArm = new SceneNode("right_lower_arm");
+		mat4.translate(rightLowerArm.transformation, rightLowerArmPosition);
+		
+		var rightWrist = new SceneNode("right_wrist");
+		mat4.translate(rightWrist.transformation, rightWristPosition);
+		
+		
 		
 		var leftShoulder = new SceneNode("left_shoulder");
 		mat4.translate(leftShoulder.transformation, leftShoulderPosition);
@@ -103,8 +115,12 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		torso.addObjects([torsoSkin]);
 		neck.addObjects([neckSkin]);
 		head.addObjects([headSkin]);
-		rightShoulder.addObjects([jointSkin]);
+		rightLowerArm.addObjects([lowerArmSkin]);
+		rightElbow.addObjects([jointSkin]);
 		rightUpperArm.addObjects([upperArmSkin]);
+		rightShoulder.addObjects([jointSkin]);
+		rightWrist.addObjects([jointSkin]);
+		
 		leftShoulder.addObjects([jointSkin]);
 		leftUpperArm.addObjects([upperArmSkin]);
 		leftElbow.addObjects([jointSkin]);
@@ -117,7 +133,12 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		leftElbow.addObjects([leftLowerArm]);
 		leftUpperArm.addObjects([leftElbow]);
 		leftShoulder.addObjects([leftUpperArm]);
+		
+		rightLowerArm.addObjects([rightWrist]);
+		rightElbow.addObjects([rightLowerArm]);
+		rightUpperArm.addObjects([rightElbow]);
 		rightShoulder.addObjects([rightUpperArm]);
+		
 		torso.addObjects([neck, rightShoulder, leftShoulder]);
 
 		/* the final robot */
