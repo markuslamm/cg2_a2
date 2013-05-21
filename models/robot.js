@@ -32,7 +32,8 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		var leftShoulderPosition = [-(torsoSize[0]/2 + jointSize[1]/2), torsoSize[1]/2 - jointSize[0]/2, 0.0];
 		var leftUpperArmPosition = [-(jointSize[0]/2 + upperArmSize[0]/2), (jointSize[1]/2 - upperArmSize[1]/2), 0];
 		var rightUpperArmPosition = [jointSize[0]/2 + upperArmSize[0]/2, (jointSize[1]/2 - upperArmSize[1]/2), 0];
-		var leftElbowPosition = [0.0, -(upperArmSize[1]/2 + jointSize[1]/2), 0];
+		var leftElbowPosition = [0.0, -(upperArmSize[1]/2 + jointSize[1]/2), 0.0];
+		var leftLowerArmPosition = [0, -(jointSize[1]/2 + lowerArmSize[1]/2), 0.0];
 
 		
 		
@@ -63,6 +64,9 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		var leftElbow = new SceneNode("left_elbow");
 		mat4.translate(leftElbow.transformation, leftElbowPosition);
 		
+		var leftLowerArm = new SceneNode("left_lower_arm");
+		mat4.translate(leftLowerArm.transformation, leftLowerArmPosition);
+		
 		/*
 		 * creating skins
 		 */
@@ -82,8 +86,11 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		
 		var upperArmSkin = new SceneNode("upperarm_skin", [cube], this.programs.vertexColor);
 		mat4.scale(upperArmSkin.transformation, upperArmSize);
-		mat4.rotate(upperArmSkin.transformation, Math.PI / 2, [0, 0, -1])
+		mat4.rotate(upperArmSkin.transformation, Math.PI / 2, [0, 0, -1]);
 		
+		var lowerArmSkin = new SceneNode("lowerarm_skin", [cube], this.programs.vertexColor);
+		mat4.scale(lowerArmSkin.transformation, lowerArmSize);
+		mat4.rotate(lowerArmSkin.transformation, Math.PI / 2, [0, 0, -1]);
 
 		/* connect skeleton with skins */
 		torso.addObjects([torsoSkin]);
@@ -94,9 +101,11 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		leftShoulder.addObjects([jointSkin]);
 		leftUpperArm.addObjects([upperArmSkin]);
 		leftElbow.addObjects([jointSkin]);
+		leftLowerArm.addObjects([lowerArmSkin]);
 		
 		/* creating scenegraph */
 		neck.addObjects([head]);
+		leftElbow.addObjects([leftLowerArm]);
 		leftUpperArm.addObjects([leftElbow]);
 		leftShoulder.addObjects([leftUpperArm]);
 		rightShoulder.addObjects([rightUpperArm]);
