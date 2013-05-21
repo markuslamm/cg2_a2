@@ -58,7 +58,7 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
         // the scene has an attribute "drawOptions" that is used by
         // the HtmlController. Each attribute in this.drawOptions
         // automatically generates a corresponding checkbox in the UI.
-        this.drawOptions = { "Perspective Projection": false, 
+        this.drawOptions = { "Perspective Projection": true, 
                              "Triangle": false,
                              "Cube": false,
                              "Band": false,
@@ -95,32 +95,32 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
         gl.clear(gl.COLOR_BUFFER_BIT |Â gl.DEPTH_BUFFER_BIT); 
             
         // set up depth test to discard occluded fragments
-// gl.enable(gl.DEPTH_TEST);
+ gl.enable(gl.DEPTH_TEST);
  gl.depthFunc(gl.LESS);
         
         // TODO veränderte cube darstellung???????
-        if(this.drawOptions["Depth Test"]){                    
-        	gl.enable(gl.DEPTH_TEST);
-        }
-        else {
-        	gl.disable(gl.DEPTH_TEST);
-        };
-
-		if(this.drawOptions["Frontface Culling"] && !this.drawOptions["Backface Culling"]){
-			gl.enable(gl.CULL_FACE);
-			gl.cullFace(gl.FRONT);
-		};
-		if(this.drawOptions["Backface Culling"] && !this.drawOptions["Frontface Culling"]){
-        	gl.enable(gl.CULL_FACE);
-			gl.cullFace(gl.BACK);
-		};
-		if(this.drawOptions["Backface Culling"] && this.drawOptions["Frontface Culling"]){
-			gl.enable(gl.CULL_FACE);
-        	gl.cullFace(gl.FRONT_AND_BACK);
-		};
-		if(!this.drawOptions["Backface Culling"] && !this.drawOptions["Frontface Culling"]){
-        	gl.disable(gl.CULL_FACE);
-		};
+//        if(this.drawOptions["Depth Test"]){                    
+//        	gl.enable(gl.DEPTH_TEST);
+//        }
+//        else {
+//        	gl.disable(gl.DEPTH_TEST);
+//        };
+//
+//		if(this.drawOptions["Frontface Culling"] && !this.drawOptions["Backface Culling"]){
+//			gl.enable(gl.CULL_FACE);
+//			gl.cullFace(gl.FRONT);
+//		};
+//		if(this.drawOptions["Backface Culling"] && !this.drawOptions["Frontface Culling"]){
+//        	gl.enable(gl.CULL_FACE);
+//			gl.cullFace(gl.BACK);
+//		};
+//		if(this.drawOptions["Backface Culling"] && this.drawOptions["Frontface Culling"]){
+//			gl.enable(gl.CULL_FACE);
+//        	gl.cullFace(gl.FRONT_AND_BACK);
+//		};
+//		if(!this.drawOptions["Backface Culling"] && !this.drawOptions["Frontface Culling"]){
+//        	gl.disable(gl.CULL_FACE);
+//		};
                 
         // draw the scene objects
         if(this.drawOptions["Triangle"]) {    

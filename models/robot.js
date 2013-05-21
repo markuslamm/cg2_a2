@@ -13,7 +13,7 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		/* create objects for drawing the roboter */
 		var triangle = new Triangle(gl);
 		var cube = new Cube(gl);
-		var band = new Band(gl);
+		var band = new Band(gl,  { radius: 0.5, height: 1.0, segments: 50 });
 		var wireframe = new Band(gl, { asWireframe : true
 		});
 
@@ -21,7 +21,8 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		var torsoSize 	= [0.6, 1.0, 0.4];
 		var jointSize 	= [0.1, 0.1, 0.1];
 		var headSize 	= [0.3, 0.4, 0.3];
-		var upperArmSize = [0.15, 0.5, 0.15];
+		var upperArmSize = [0.15, 0.4, 0.15];
+		var lowerArmSize = [0.15, 0.5, 0.15];
 
 		/* positions */
 		var torsoPosition	= [0.0,0.0, 0.0];
@@ -29,9 +30,9 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		var headPosition	= [0.0, jointSize[1]/2 + headSize[1]/2, 0.0]; 
 		var rightShoulderPosition = [torsoSize[0]/2 + jointSize[1]/2, torsoSize[1]/2 - jointSize[0]/2, 0.0];
 		var leftShoulderPosition = [-(torsoSize[0]/2 + jointSize[1]/2), torsoSize[1]/2 - jointSize[0]/2, 0.0];
-		//var leftUpperArmPosition = [-0.5, -0.5, 0];
 		var leftUpperArmPosition = [-(jointSize[0]/2 + upperArmSize[0]/2), (jointSize[1]/2 - upperArmSize[1]/2), 0];
 		var rightUpperArmPosition = [jointSize[0]/2 + upperArmSize[0]/2, (jointSize[1]/2 - upperArmSize[1]/2), 0];
+		var leftElbowPosition = [0.0, -(upperArmSize[1]/2 + jointSize[1]/2), 0];
 
 		
 		
@@ -59,6 +60,9 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		var leftUpperArm = new SceneNode("left_upper_arm");
 		mat4.translate(leftUpperArm.transformation, leftUpperArmPosition);
 		
+		var leftElbow = new SceneNode("left_elbow");
+		mat4.translate(leftElbow.transformation, leftElbowPosition);
+		
 		/*
 		 * creating skins
 		 */
@@ -76,7 +80,7 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		mat4.scale(jointSkin.transformation, jointSize);
 		mat4.rotate(jointSkin.transformation, Math.PI / 2, [0, 0, -1])
 		
-		var upperArmSkin = new SceneNode("upperarm_skin", [cube], this.programs.violet);
+		var upperArmSkin = new SceneNode("upperarm_skin", [cube], this.programs.vertexColor);
 		mat4.scale(upperArmSkin.transformation, upperArmSize);
 		mat4.rotate(upperArmSkin.transformation, Math.PI / 2, [0, 0, -1])
 		
@@ -89,16 +93,18 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		rightUpperArm.addObjects([upperArmSkin]);
 		leftShoulder.addObjects([jointSkin]);
 		leftUpperArm.addObjects([upperArmSkin]);
+		leftElbow.addObjects([jointSkin]);
 		
 		/* creating scenegraph */
 		neck.addObjects([head]);
+		leftUpperArm.addObjects([leftElbow]);
 		leftShoulder.addObjects([leftUpperArm]);
 		rightShoulder.addObjects([rightUpperArm]);
 		torso.addObjects([neck, rightShoulder, leftShoulder]);
 
 		/* the final robot */
 		this.result = new SceneNode("robot", [torso], this.programs.red);
-		mat4.translate(this.result.transformation, [ 0, 0, 0 ]);
+		mat4.translate(this.result.transformation, [ 0, -0.2, 0 ]);
 	};
 
 	// draw method: activate buffers and issue WebGL draw() method
