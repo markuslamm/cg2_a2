@@ -143,9 +143,7 @@ define(["util", "vbo"],
 			           0.0, 1.0, 1.0, 1.0
             ];
         
-        this.colorBuffer = new vbo.Attribute(gl, { "numComponents": 4, "dataType": gl.FLOAT, "data": colors } );
-
-        
+        this.colorBuffer = new vbo.Attribute(gl, { "numComponents": 4, "dataType": gl.FLOAT, "data": colors } );        
     };
 
     // draw method: activate buffers and issue WebGL draw() method

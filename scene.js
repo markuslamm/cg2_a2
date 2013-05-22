@@ -58,15 +58,15 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
         // the scene has an attribute "drawOptions" that is used by
         // the HtmlController. Each attribute in this.drawOptions
         // automatically generates a corresponding checkbox in the UI.
-        this.drawOptions = { "Perspective Projection": true, 
+        this.drawOptions = { "Perspective Projection": false, 
                              "Triangle": false,
                              "Cube": false,
                              "Band": false,
                              "Wireframe": false,
                              "Depth Test": true,
-                             "Frontface Culling": false,
-                             "Backface Culling": false,
-                             "Show Robot": true
+                             "Backface-Culling": false,
+                             "Frontface-Culling": false,
+                             "Show Robot": false
                              };                       
     };
 
@@ -95,32 +95,33 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
         gl.clear(gl.COLOR_BUFFER_BIT |Â gl.DEPTH_BUFFER_BIT); 
             
         // set up depth test to discard occluded fragments
- gl.enable(gl.DEPTH_TEST);
- gl.depthFunc(gl.LESS);
+// gl.enable(gl.DEPTH_TEST);
+// gl.depthFunc(gl.LESS);
         
         // TODO veränderte cube darstellung???????
-//        if(this.drawOptions["Depth Test"]){                    
-//        	gl.enable(gl.DEPTH_TEST);
-//        }
-//        else {
-//        	gl.disable(gl.DEPTH_TEST);
-//        };
-//
-//		if(this.drawOptions["Frontface Culling"] && !this.drawOptions["Backface Culling"]){
-//			gl.enable(gl.CULL_FACE);
-//			gl.cullFace(gl.FRONT);
-//		};
-//		if(this.drawOptions["Backface Culling"] && !this.drawOptions["Frontface Culling"]){
-//        	gl.enable(gl.CULL_FACE);
-//			gl.cullFace(gl.BACK);
-//		};
-//		if(this.drawOptions["Backface Culling"] && this.drawOptions["Frontface Culling"]){
-//			gl.enable(gl.CULL_FACE);
-//        	gl.cullFace(gl.FRONT_AND_BACK);
-//		};
-//		if(!this.drawOptions["Backface Culling"] && !this.drawOptions["Frontface Culling"]){
-//        	gl.disable(gl.CULL_FACE);
-//		};
+        if(this.drawOptions["Depth Test"]){                    
+        	gl.enable(gl.DEPTH_TEST);
+        }
+        else {
+        	gl.disable(gl.DEPTH_TEST);
+        }
+        
+        if(this.drawOptions["Backface-Culling"] || this.drawOptions["Frontface-Culling"]) {
+        	gl.enable(gl.CULL_FACE);
+        	gl.frontFace(gl.CW);
+        	if(this.drawOptions["Backface-Culling"]) {
+    			gl.cullFace(gl.BACK);
+        	}
+        	else if(this.drawOptions["Frontface-Culling"]) {
+    			gl.cullFace(gl.FRONT);
+        	}
+        	else if(this.drawOptions["Frontface-Culling"] && this.drawOptions["Backface-Culling"]) {
+        		gl.cullFace(gl.FRONT_AND_BACK);
+        	}
+        }
+        else {
+        	gl.disable(gl.CULL_FACE);
+        }
                 
         // draw the scene objects
         if(this.drawOptions["Triangle"]) {    
@@ -143,12 +144,12 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
     // the scene's rotate method is called from HtmlController, when certain
     // keyboard keys are pressed. Try Y and Shift-Y, for example.
     Scene.prototype.rotate = function(rotationAxis, angle) {
-
         window.console.log("rotating around " + rotationAxis + " by " + angle + " degrees." );
+
+         /* TODO remove stupid switch !!!! */
 
      // degrees to radians
         var radians = angle*Math.PI/180;
-        
         // manipulate the corresponding matrix, depending on the name of the
 		// joint
         switch(rotationAxis) {
@@ -182,7 +183,6 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
             case "leftWristY":
             	this.robot.rotate(rotationAxis, angle);
             	break;
-            	
             case "rightShoulderX":
             	this.robot.rotate(rotationAxis, angle);
             	break;
