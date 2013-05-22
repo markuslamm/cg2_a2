@@ -196,6 +196,21 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 				case "leftWristY":
 					mat4.rotate(leftWrist.transformation, radians, [0, 1, 0])
 					break;
+				case "rightShoulderX":
+					mat4.rotate(rightShoulder.transformation, radians, [1, 0, 0])
+					break;
+				case "rightShoulderZ":
+					mat4.rotate(rightShoulder.transformation, radians, [0, 0, 1])
+					break;
+				case "rightElbowX":
+					mat4.rotate(rightElbow.transformation, radians, [1, 0, 0])
+					break;
+				case "rightWristX":
+					mat4.rotate(rightWrist.transformation, radians, [1, 0, 0])
+					break;
+				case "rightWristY":
+					mat4.rotate(rightWrist.transformation, radians, [0, 1, 0])
+					break;
 				default:
 					window.console.log("joint " + rotationAxis + " not implemented.");
 					break;

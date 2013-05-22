@@ -96,13 +96,21 @@ define(["jquery"],
                 88: "worldX", 120: "worldX", 
                 89: "worldY", 121: "worldY",
                 90: "worldZ", 122: "worldZ",
+                
                 72: "headX", 104: "headX", // h
                 74: "headY", 106: "headY", // j
+                
                 87: "leftShoulderX", 119: "leftShoulderX", //w
                 65: "leftShoulderZ", 97: "leftShoulderZ", //a
                 69: "leftElbowX", 101: "leftElbowX", // e
                 82: "leftWristX", 114: "leftWristX", // r
-                84: "leftWristY", 116:	"leftWristY"// t	
+                84: "leftWristY", 116:	"leftWristY",// t
+                
+                71: "rightShoulderX", 103: "rightShoulderX", // g
+                85: "rightShoulderZ", 117: "rightShoulderZ", // u
+                73: "rightElbowX", 105: "rightElbowX", // i
+                79: "rightWristX", 111: "rightWristX", // o
+                80: "rightWristY", 112: "rightWristY", // p	
             };
 
             // Rotate by +5 degrees or -5 degrees, depending on Shift key
