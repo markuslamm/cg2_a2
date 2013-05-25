@@ -65,8 +65,7 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
                              "Wireframe": false,
                              "Depth Test": true,
                              "Backface-Culling": false,
-                             "Frontface-Culling": false,
-                             "Show Robot": false
+                             "Show Robot": true
                              };                       
     };
 
@@ -105,19 +104,12 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
         else {
         	gl.disable(gl.DEPTH_TEST);
         }
+        gl.depthFunc(gl.LESS)
         
-        if(this.drawOptions["Backface-Culling"] || this.drawOptions["Frontface-Culling"]) {
+        if(this.drawOptions["Backface-Culling"]) {
         	gl.enable(gl.CULL_FACE);
         	gl.frontFace(gl.CW);
-        	if(this.drawOptions["Backface-Culling"]) {
-    			gl.cullFace(gl.BACK);
-        	}
-        	else if(this.drawOptions["Frontface-Culling"]) {
-    			gl.cullFace(gl.FRONT);
-        	}
-        	else if(this.drawOptions["Frontface-Culling"] && this.drawOptions["Backface-Culling"]) {
-        		gl.cullFace(gl.FRONT_AND_BACK);
-        	}
+			gl.cullFace(gl.BACK);
         }
         else {
         	gl.disable(gl.CULL_FACE);
@@ -140,11 +132,12 @@ define(["jquery", "gl-matrix", "util", "program", "shaders",
             this.robot.draw(gl, this.programs.red, this.transformation);
         }
     };
+	
 
     // the scene's rotate method is called from HtmlController, when certain
     // keyboard keys are pressed. Try Y and Shift-Y, for example.
     Scene.prototype.rotate = function(rotationAxis, angle) {
-        window.console.log("rotating around " + rotationAxis + " by " + angle + " degrees." );
+       // window.console.log("rotating around " + rotationAxis + " by " + angle + " degrees." );
 
          /* TODO remove stupid switch !!!! */
 

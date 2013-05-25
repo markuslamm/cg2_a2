@@ -22,9 +22,9 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		var torsoSize = [ 0.6, 1.0, 0.4 ];
 		var jointSize = [ 0.1, 0.1, 0.1 ];
 		var headSize = [ 0.3, 0.4, 0.3 ];
-		var upperArmSize = [ 0.15, 0.35, 0.15 ];
-		var lowerArmSize = [ 0.15, 0.3, 0.15 ];
-		var handSize = [ 0.2, 0.2, 0.1 ];
+		var upperArmSize = [ 0.2, 0.4, 0.2 ];
+		var lowerArmSize = [ 0.2, 0.3, 0.2 ];
+		var handSize = [ 0.2, 0.2, 0.2 ];
 
 		/* positions */
 		var torsoPosition = [ 0.0, 0.0, 0.0 ];
@@ -172,7 +172,7 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 		mat4.translate(this.result.transformation, [0, -0.2, 0]);
 
 		this.rotateJoint = function(joint, angle) {
-			console.log("this.rotatejoint(" + joint + "," + angle + ")");
+			//console.log("this.rotatejoint(" + joint + "," + angle + ")");
 			var radians = angle*Math.PI/180;
 			switch (joint) {
 				case "headX":
@@ -217,9 +217,9 @@ define([ "util", "vbo", "models/cube", "models/band", "models/triangle", "scene_
 			}
 		};
 	};
-
+	
 	Robot.prototype.rotate = function(joint, angle) {
-		window.console.log("Robot.prototype.rotate()");
+		//window.console.log("Robot.prototype.rotate()");
 		this.rotateJoint(joint, angle);
 	};
 
